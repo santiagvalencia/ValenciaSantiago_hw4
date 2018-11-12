@@ -22,8 +22,38 @@ double RungeKutta(double theta, string nombre);
 #define dt 0.00001
 
 int main(){
-  double x_45 = RungeKutta(45, "prueba.txt");
-  cout << x_45;
+  double x_45 = RungeKutta(45, "RG_45.txt");
+  double x_10 = RungeKutta(10, "RG_10.txt");
+  double x_20 = RungeKutta(20, "RG_20.txt");
+  double x_30 = RungeKutta(30, "RG_30.txt");
+  double x_40 = RungeKutta(40, "RG_40.txt");
+  double x_50 = RungeKutta(50, "RG_50.txt");
+  double x_60 = RungeKutta(60, "RG_60.txt");
+  double x_70 = RungeKutta(70, "RG_70.txt");
+
+  double angulos[8] = {45, 10, 20, 30, 40, 50, 60, 70};
+  double distancias[8] = {x_45, x_10, x_20, x_30, x_40, x_50, x_60, x_70};
+
+  int i; int j; double temp_d; double temp_a;
+
+  for(i=0; i<8; i++)
+  {
+    for (j=i+1; j<8; j++)
+    {
+      if (distancias[j]<distancias[i])
+      {
+        temp_d = distancias[i];
+        temp_a = angulos[i];
+        distancias[i] = distancias[j];
+        angulos[i] = angulos[j];
+        distancias[j] = temp_d;
+        angulos[j] = temp_a;
+      }
+    }
+  }
+
+  cout << "La mayor distancia alcanzada es de " << distancias[7]<< " m y corresponde a un angulo de " << angulos[7] <<" grados."<< "\n";
+
 }
 
 double dx_dt(double vx){
@@ -43,7 +73,7 @@ double dvy_dt(double vx, double vy){
 }
 
 double RungeKutta(double theta, string nombre){
-  
+
   ofstream archivo;
   archivo.open(nombre);
 
