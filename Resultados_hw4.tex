@@ -1,18 +1,47 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[letterpaper, portrait, margin=0.9in]{geometry}
+\usepackage{amsmath}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{subfig}
+\usepackage{graphicx}
 
 \title{Tarea 4 - Métodos computacionales}
-\author{Santiago Valencia}
+\author{Santiago Valencia - 201532432}
 \date{19 de noviembre 2018}
 
-\usepackage{graphicx}
 
 \begin{document}
 
 \maketitle
 
 \section*{Ecuaciones diferenciales ordinarias}
+
+La solución de la ecuación diferencial:
+
+\begin{equation*}
+    \frac{d^2\vec{x}(t)}{dt^2} = -\vec{g} - c\frac{|\vec{v}(t)|^2}{m}\frac{\vec{v}(t)}{|\vec{v}(t)|}
+\end{equation*}
+se puede encontrar si se descompone la ecuación vectorial en sus coordenadas $(x, y)$ y además se sustituye $\vec{v} = d\vec{x}/dt$:
+\begin{gather*}
+    \frac{dv_x}{dt} = -c\frac{|\vec{v}|}{m}v_x \ ; \ \frac{dx}{dt} = v_x \\
+    \frac{dv_y}{dt} = -g - c\frac{|\vec{v}|}{m}v_y \ ; \ \frac{dy}{dt} = v_y
+\end{gather*}
+
+A partir de lo anterior se aplica el método Runge-Kutta de cuarto orden para los pares $x, v_x$ y $y, v_y$ para obtener las siguientes gráficas ($c = 0.2, g = 10 \text{ m/s}^2, m = 0.2 \text{ kg}, v(0) = 300 \text{ m/s}, (x_0, y_0) = (0, 0)$):
+
+\begin{figure}[h]
+\centering
+    \subfloat[Trayectoria para 45 grados. ]{\includegraphics[width = 0.45\linewidth]{Tray_45.pdf}}
+    \subfloat[Trayectorias para varios ángulos de lanzamiento.]{\includegraphics[width=0.45\linewidth]{Tray_varias.pdf}}
+    \label{fig:aux}
+    \caption{Gráficas de la solución de la ecuación diferencial ordinaria.}
+\end{figure}
+
+Gracias a las gráficas se puede ver que, contrario a lo que sucede en el caso sin fricción, el ángulo entre los ensayados que produce el mayor rango es el de 20 grados.
+
+
+
 
 \section*{Ecuaciones diferenciales parciales}
 
