@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+#genera arreglos con los archivos de datos
 RG_45 = np.genfromtxt("RG_45.txt")
 RG_10 = np.genfromtxt("RG_10.txt")
 RG_20 = np.genfromtxt("RG_20.txt")
@@ -9,7 +9,7 @@ RG_40 = np.genfromtxt("RG_40.txt")
 RG_50 = np.genfromtxt("RG_50.txt")
 RG_60 = np.genfromtxt("RG_60.txt")
 RG_70 = np.genfromtxt("RG_70.txt")
-
+#toma los valores de (x, y) para cada angulo (un angulo por archivo). Las columnas 1 y 2 de cada archivo son sus correspondientes valores de (x,y)
 x_45 = RG_45[:, 1]
 y_45 = RG_45[:, 2]
 x_10 = RG_10[:, 1]
@@ -26,14 +26,14 @@ x_60 = RG_60[:, 1]
 y_60 = RG_60[:, 2]
 x_70 = RG_70[:, 1]
 y_70 = RG_70[:, 2]
-
+#grafica la trayectoria con 45 grados
 plt.plot(x_45, y_45)
 plt.xlabel("x (m)")
 plt.ylabel("y (m)")
 plt.title("Trayectoria con angulo de lanzamiento de 45 grados")
 plt.savefig("Tray_45.pdf")
 plt.close()
-
+#grafica todas las trayectorias encontradas
 plt.plot(x_45, y_45, label = "45 grados")
 plt.plot(x_10, y_10, label = "10 grados")
 plt.plot(x_20, y_20, label = "20 grados")
