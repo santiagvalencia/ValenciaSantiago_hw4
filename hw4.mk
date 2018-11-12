@@ -9,3 +9,12 @@ Tray_45.pdf Tray_varias.pdf: $(datos)
 $(datos): ODE.cpp
 	g++ ODE.cpp
 	./a.out
+
+.PHONY : clean
+
+clean:
+	rm -r *.txt
+	rm -r *.log
+	rm -r *.pdf
+	rm -r *.aux
+	rm -r *.out
