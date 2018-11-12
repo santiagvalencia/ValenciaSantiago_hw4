@@ -31,6 +31,8 @@ int main(){
   double x_60 = RungeKutta(60, "RG_60.txt");
   double x_70 = RungeKutta(70, "RG_70.txt");
 
+  cout << "\nDistancia recorrida por el proyectil (45 grados): " << x_45 << " m" << "\n";
+
   double angulos[8] = {45, 10, 20, 30, 40, 50, 60, 70};
   double distancias[8] = {x_45, x_10, x_20, x_30, x_40, x_50, x_60, x_70};
 
