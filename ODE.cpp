@@ -13,11 +13,11 @@ double dvy_dt(double vx, double vy);
 double dvx_dt(double vx, double vy);
 
 #define PI 3.14159265359
-#define N 10000
+#define N 100000
 #define g 10.0
 #define c 0.2
 #define m 0.2
-#define dt 0.001
+#define dt 0.00001
 
 int main(){
   double x[N];
@@ -25,6 +25,7 @@ int main(){
   double vx[N];
   double vy[N];
   double t[N];
+  double v[N];
 
   double theta = 45*PI/180;
   double v0 = 300;
@@ -34,6 +35,9 @@ int main(){
   vx[0] = 300*cos(theta);
   vy[0] = 300*sin(theta);
   t[0] = 0;
+  v[0] = sqrt(vx[0]*vx[0] + vy[0]*vy[0]);
+
+  cout << t[0] << " " << x[0] << " " << y[0] << " " << vx[0] << " " << vy[0] << v[0] << "\n";
 
   double k1_prima_x; double k1_prima_y; double k1_prima_vx; double k1_prima_vy;
   double k2_prima_x; double k2_prima_y; double k2_prima_vx; double k2_prima_vy;
@@ -89,8 +93,13 @@ for(int i=1; i<N; i++){
   y[i] = y[i-1] + dt*k_prom_y;
   vx[i] = vx[i-1] + dt*k_prom_vx;
   vy[i] = vy[i-1] + dt*k_prom_vy;
+  v[i] = sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
 
-  cout << t[i] << " " << x[i] << " " << y[i] << " " << vx[i] << " " << vy[i] << "\n";
+  if(y[i]<=0){
+    break;
+  }
+
+  cout << t[i] << " " << x[i] << " " << y[i] << " " << vx[i] << " " << vy[i] << " " << v[i] << "\n";
 
 }
 
