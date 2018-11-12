@@ -10,7 +10,7 @@ using namespace std;
 double dx_dt(double vx);
 double dy_dt(double vy);
 double dvy_dt(double vx, double vy);
-double dvy_dt(double vx, double vy);
+double dvx_dt(double vx, double vy);
 
 #define PI 3.14159265359
 #define N 10000
@@ -90,7 +90,7 @@ for(int i=1; i<N; i++){
   vx[i] = vx[i-1] + dt*k_prom_vx;
   vy[i] = vy[i-1] + dt*k_prom_vy;
 
-  cout << t << " " << x << " " << y << " " << " " vx << " " << vy;
+  cout << t[i] << " " << x[i] << " " << y[i] << " " << vx[i] << " " << vy[i] << "\n";
 
 }
 
