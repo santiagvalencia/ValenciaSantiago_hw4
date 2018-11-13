@@ -12,7 +12,7 @@ using namespace std;
 #define Cp 820.0
 #define rho 2710.0
 #define nu k/(Cp*rho)
-#define N 200//1000
+#define N 50//1000
 #define D 0.1
 #define T0 10.0
 #define Tv 100.0
@@ -21,6 +21,9 @@ using namespace std;
 #define dx L/N
 #define dy L/N
 #define dt (dx*dx*dy*dy)/(2*nu*(dx*dx + dy*dy))
+
+double promedio(double M[N][N]);
+void imprimir(double M[N][N], double t, string nombre);
 
 int main(){
 
@@ -48,12 +51,13 @@ int main(){
     }
   }
 
-  int n_pasos = 10000;
-  double T_prom;
+  int n_pasos = 3000;
   double t;
   ofstream promedios;
+  promedios.open("promedios.txt");
 
   for(int n=0; n<n_pasos; n++){
+    t = n*dt;
     for(int i=1; i<N-1; i++){
       for(int j=1; j<N-1; j++){
         r2 = (i*dx-centro_x)*(i*dx-centro_x) + (j*dy-centro_y)*(j*dy-centro_y);
@@ -71,22 +75,36 @@ int main(){
       T_presente[i][N-1] = T0;
       T_presente[i][0] = T0;
     }
+    promedios << t << " " << promedio(T_presente) << "\n";
     for(int i=0; i<N; i++){
       for(int j=0; j<N; j++){
         T_pasado[i][j] = T_presente[i][j];
       }
     }
   }
+  promedios.close();
+  imprimir(T_presente, t, "final.txt");
+}
 
-  ofstream final;
-  final.open("final.txt");
+double promedio(double M[N][N]){
+  double suma = 0;
   for(int i=0; i<N; i++){
     for(int j=0; j<N; j++){
-      final << T_presente[i][j] << " ";
+      suma += M[i][j];
     }
-    final << "\n";
   }
-  final.close();
+  suma /= (N*N);
+  return suma;
+}
 
-
+void imprimir(double M[N][N], double t, string nombre){
+  ofstream archivo;
+  archivo.open(nombre);
+  for(int i=0; i<N; i++){
+    for(int j=0; j<N; j++){
+      archivo << M[i][j] << " ";
+    }
+    archivo << t << "\n";
+  }
+  archivo.close();
 }
