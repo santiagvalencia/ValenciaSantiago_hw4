@@ -45,6 +45,9 @@ int main(){
       }
     }
   }
+
+  imprimir(T_inicial, 0, "inicial.txt");
+
   for(int i=0; i<N; i++){
     for(int j=0; j<N; j++){
       T_pasado[i][j] = T_inicial[i][j];
@@ -54,7 +57,7 @@ int main(){
   int n_pasos = 3000;
   double t;
   ofstream promedios;
-  promedios.open("promedios.txt");
+  promedios.open("promedios_F.txt");
 
   for(int n=0; n<n_pasos; n++){
     t = n*dt;
@@ -75,15 +78,22 @@ int main(){
       T_presente[i][N-1] = T0;
       T_presente[i][0] = T0;
     }
+
     promedios << t << " " << promedio(T_presente) << "\n";
     for(int i=0; i<N; i++){
       for(int j=0; j<N; j++){
         T_pasado[i][j] = T_presente[i][j];
       }
     }
+    if(n==200){
+      imprimir(T_presente, t, "intermedio1_F.txt");
+    }
+    else if(n==400){
+      imprimir(T_presente, t, "intermedio2_F.txt");
+    }
   }
   promedios.close();
-  imprimir(T_presente, t, "final.txt");
+  imprimir(T_presente, t, "final_F.txt");
 }
 
 double promedio(double M[N][N]){
