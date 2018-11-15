@@ -26,10 +26,12 @@ double promedio(double M[N][N]);
 void imprimir(double M[N][N], double t, string nombre);
 
 int main(){
-
-  static double T_pasado[N][N];
   static double T_inicial[N][N];
-  static double T_presente[N][N];
+  static double T_pasadoF[N][N];
+  static double T_presenteF[N][N];
+
+  static double T_pasadoA[N][N];
+  static double T_presenteA[N][N];
 
   double r2;
   double centro_x = L/2; double centro_y = L/2;
@@ -48,17 +50,17 @@ int main(){
 
   imprimir(T_inicial, 0, "inicial.txt");
 
-  //CONDICIONES DE FRONTERA FIJAS
   for(int i=0; i<N; i++){
     for(int j=0; j<N; j++){
-      T_pasado[i][j] = T_inicial[i][j];
+      T_pasadoF[i][j] = T_inicial[i][j];
+      T_pasadoA[i][j] = T_inicial[i][j];
     }
   }
 
-  int n_pasos = 30000;
+  int n_pasos = 300000;
   double t;
   ofstream promedios;
-  promedios.open("promedios_F.txt");
+  promedios.open("promedios.txt");
 
   for(int n=0; n<n_pasos; n++){
     t = n*dt;
@@ -66,83 +68,46 @@ int main(){
       for(int j=1; j<N-1; j++){
         r2 = (i*dx-centro_x)*(i*dx-centro_x) + (j*dy-centro_y)*(j*dy-centro_y);
         if(r2 > R*R){
-          T_presente[i][j] = T_pasado[i][j] + dt*nu*((T_pasado[i+1][j]-2*T_pasado[i][j]+T_pasado[i-1][j])/(dx*dx) + (T_pasado[i][j+1]-2*T_pasado[i][j]+T_pasado[i][j-1])/(dy*dy));
+          T_presenteF[i][j] = T_pasadoF[i][j] + dt*nu*((T_pasadoF[i+1][j]-2*T_pasadoF[i][j]+T_pasadoF[i-1][j])/(dx*dx) + (T_pasadoF[i][j+1]-2*T_pasadoF[i][j]+T_pasadoF[i][j-1])/(dy*dy));
+          T_presenteA[i][j] = T_pasadoA[i][j] + dt*nu*((T_pasadoA[i+1][j]-2*T_pasadoA[i][j]+T_pasadoA[i-1][j])/(dx*dx) + (T_pasadoA[i][j+1]-2*T_pasadoA[i][j]+T_pasadoA[i][j-1])/(dy*dy));
         }
         else{
-          T_presente[i][j] = Tv;
+          T_presenteF[i][j] = Tv;
+          T_presenteA[i][j] = Tv;
         }
       }
     }
     for(int i=0; i<N; i++){
-      T_presente[N-1][i] = T0;
-      T_presente[0][i] = T0;
-      T_presente[i][N-1] = T0;
-      T_presente[i][0] = T0;
+      T_presenteF[N-1][i] = T0;
+      T_presenteF[0][i] = T0;
+      T_presenteF[i][N-1] = T0;
+      T_presenteF[i][0] = T0;
+
+      T_presenteA[N-1][i] = T_presenteA[N-2][i];
+      T_presenteA[0][i] = T_presenteA[1][i];
+      T_presenteA[i][N-1] = T_presenteA[i][N-2];
+      T_presenteA[i][0] = T_presenteA[i][1];
     }
 
-    promedios << t << " " << promedio(T_presente) << "\n";
     for(int i=0; i<N; i++){
       for(int j=0; j<N; j++){
-        T_pasado[i][j] = T_presente[i][j];
+        T_pasadoF[i][j] = T_presenteF[i][j];
+        T_pasadoA[i][j] = T_presenteA[i][j];
       }
     }
+    promedios << t << " " << promedio(T_presenteF) << " " << promedio(T_presenteA) << "\n";
     if(n==2000){
-      imprimir(T_presente, t, "intermedio1_F.txt");
+      imprimir(T_presenteF, t, "intermedio1_F.txt");
+      imprimir(T_presenteA, t, "intermedio1_A.txt");
     }
     else if(n==10000){
-      imprimir(T_presente, t, "intermedio2_F.txt");
+      imprimir(T_presenteF, t, "intermedio2_F.txt");
+      imprimir(T_presenteA, t, "intermedio2_A.txt");
     }
   }
   promedios.close();
-  imprimir(T_presente, t, "final_F.txt");
-
-  //CONDICIONES DE FRONTERA ABIERTAS
-
-  n_pasos = 50000;
-
-  for(int i=0; i<N; i++){
-    for(int j=0; j<N; j++){
-      T_pasado[i][j] = T_inicial[i][j];
-    }
-  }
-
-  promedios.open("promedios_A.txt");
-
-  for(int n=0; n<n_pasos; n++){
-    t = n*dt;
-    for(int i=1; i<N-1; i++){
-      for(int j=1; j<N-1; j++){
-        r2 = (i*dx-centro_x)*(i*dx-centro_x) + (j*dy-centro_y)*(j*dy-centro_y);
-        if(r2 > R*R){
-          T_presente[i][j] = T_pasado[i][j] + dt*nu*((T_pasado[i+1][j]-2*T_pasado[i][j]+T_pasado[i-1][j])/(dx*dx) + (T_pasado[i][j+1]-2*T_pasado[i][j]+T_pasado[i][j-1])/(dy*dy));
-        }
-        else{
-          T_presente[i][j] = Tv;
-        }
-      }
-    }
-    for(int i=0; i<N; i++){
-      T_presente[N-1][i] = T_presente[N-2][i];
-      T_presente[0][i] = T_presente[1][i];
-      T_presente[i][N-1] = T_presente[i][N-2];
-      T_presente[i][0] = T_presente[i][1];
-    }
-
-    promedios << t << " " << promedio(T_presente) << "\n";
-    for(int i=0; i<N; i++){
-      for(int j=0; j<N; j++){
-        T_pasado[i][j] = T_presente[i][j];
-      }
-    }
-    if(n==200){
-      imprimir(T_presente, t, "intermedio1_A.txt");
-    }
-    else if(n==400){
-      imprimir(T_presente, t, "intermedio2_A.txt");
-    }
-  }
-  promedios.close();
-  imprimir(T_presente, t, "final_A.txt");
+  imprimir(T_presenteF, t, "final_F.txt");
+  imprimir(T_presenteA, t, "final_A.txt");
 }
 
 double promedio(double M[N][N]){
