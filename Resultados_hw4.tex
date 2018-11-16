@@ -34,15 +34,67 @@ A partir de lo anterior se aplica el método Runge-Kutta de cuarto orden para lo
 \centering
     \subfloat[Trayectoria para 45 grados. ]{\includegraphics[width = 0.45\linewidth]{Tray_45.pdf}}
     \subfloat[Trayectorias para varios ángulos de lanzamiento.]{\includegraphics[width=0.45\linewidth]{Tray_varias.pdf}}
-    \label{fig:aux}
+    \label{fig:ODEs}
     \caption{Gráficas de la solución de la ecuación diferencial ordinaria.}
 \end{figure}
 
 Gracias a las gráficas se puede ver que, contrario a lo que sucede en el caso sin fricción, el ángulo entre los ensayados que produce el mayor rango es el de 20 grados.
 
 
-
-
 \section*{Ecuaciones diferenciales parciales}
+
+Para este ejercicio se evaluaron tres condiciones de frontera: fijas, abiertas y periódicas. Las gráficas para fronteras fijas se pueden ver en la figura \ref{fig:fijas}.
+
+\begin{figure}[h]
+\centering
+    \subfloat[Estado inicial. ]{\includegraphics[width = 0.45\linewidth]{inicial_F.pdf}}
+    \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_F.pdf}} \\
+      \subfloat[Estado intermedio 2. ]{\includegraphics[width = 0.45\linewidth]{intermedio2_F.pdf}}
+    \subfloat[Estado de equilibrio.]{\includegraphics[width=0.45\linewidth]{final_F.pdf}}
+    \label{fig:fijas}
+    \caption{Gráficas para fronteras fijas.}
+\end{figure}
+
+Las gráficas para fronteras abiertas se pueden ver en la figura \ref{fig:abiertas}.
+
+\begin{figure}[h]
+\centering
+    \subfloat[Estado inicial. ]{\includegraphics[width = 0.45\linewidth]{inicial_A.pdf}}
+    \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_A.pdf}} \\
+      \subfloat[Estado intermedio 2. ]{\includegraphics[width = 0.45\linewidth]{intermedio2_A.pdf}}
+    \subfloat[Estado de equilibrio.]{\includegraphics[width=0.45\linewidth]{final_A.pdf}}
+    \label{fig:abiertas}
+    \caption{Gráficas para fronteras abiertas.}
+\end{figure}
+
+Las gráficas para fronteras periódicas se pueden ver en la figura \ref{fig:periodicas}.
+
+\begin{figure}[h]
+\centering
+    \subfloat[Estado inicial. ]{\includegraphics[width = 0.45\linewidth]{inicial_P.pdf}}
+    \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_P.pdf}} \\
+      \subfloat[Estado intermedio 2. ]{\includegraphics[width = 0.45\linewidth]{intermedio2_P.pdf}}
+    \subfloat[Estado de equilibrio.]{\includegraphics[width=0.45\linewidth]{final_P.pdf}}
+    \label{fig:periodicas}
+    \caption{Gráficas para fronteras periódicas.}
+\end{figure}
+
+Finalmente, en la figura \ref{fig:promedios} se puede ver una gráfica de la evolución temporal de la temperatura promedio en el área de interés para cada condición de frontera.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width = \linewidth]{promedios.pdf}
+	\label{fig:promedios}
+	\caption{Temperaturas promedio.}
+\end{figure} 
+
+
+
+
+
+
+
+
+
 
 \end{document}
