@@ -12,7 +12,7 @@ using namespace std;
 #define Cp 820.0
 #define rho 2710.0
 #define nu k/(Cp*rho)
-#define N 200//1000
+#define N 100//1000
 #define D 0.1
 #define T0 10.0
 #define Tv 100.0
@@ -32,6 +32,9 @@ int main(){
 
   static double T_pasadoA[N][N];
   static double T_presenteA[N][N];
+
+  static double T_pasadoP[N][N];
+  static double T_presenteP[N][N];
 
   double r2;
   double centro_x = L/2; double centro_y = L/2;
@@ -54,10 +57,11 @@ int main(){
     for(int j=0; j<N; j++){
       T_pasadoF[i][j] = T_inicial[i][j];
       T_pasadoA[i][j] = T_inicial[i][j];
+      T_pasadoP[i][j] = T_inicial[i][j];
     }
   }
 
-  int n_pasos = 300000;
+  int n_pasos = 80000;
   double t;
   ofstream promedios;
   promedios.open("promedios.txt");
@@ -70,10 +74,12 @@ int main(){
         if(r2 > R*R){
           T_presenteF[i][j] = T_pasadoF[i][j] + dt*nu*((T_pasadoF[i+1][j]-2*T_pasadoF[i][j]+T_pasadoF[i-1][j])/(dx*dx) + (T_pasadoF[i][j+1]-2*T_pasadoF[i][j]+T_pasadoF[i][j-1])/(dy*dy));
           T_presenteA[i][j] = T_pasadoA[i][j] + dt*nu*((T_pasadoA[i+1][j]-2*T_pasadoA[i][j]+T_pasadoA[i-1][j])/(dx*dx) + (T_pasadoA[i][j+1]-2*T_pasadoA[i][j]+T_pasadoA[i][j-1])/(dy*dy));
+          T_presenteP[i][j] = T_pasadoP[i][j] + dt*nu*((T_pasadoP[i+1][j]-2*T_pasadoP[i][j]+T_pasadoP[i-1][j])/(dx*dx) + (T_pasadoP[i][j+1]-2*T_pasadoP[i][j]+T_pasadoP[i][j-1])/(dy*dy));
         }
         else{
           T_presenteF[i][j] = Tv;
           T_presenteA[i][j] = Tv;
+          T_presenteP[i][j] = Tv;
         }
       }
     }
@@ -87,27 +93,36 @@ int main(){
       T_presenteA[0][i] = T_presenteA[1][i];
       T_presenteA[i][N-1] = T_presenteA[i][N-2];
       T_presenteA[i][0] = T_presenteA[i][1];
+
+      T_presenteP[N-1][i] = T_presenteP[N-2][i];
+      T_presenteP[0][i] = T_presenteP[N-1][i];
+      T_presenteP[i][N-1] = T_presenteP[i][N-2];
+      T_presenteP[i][0] = T_presenteP[i][N-1];
     }
 
     for(int i=0; i<N; i++){
       for(int j=0; j<N; j++){
         T_pasadoF[i][j] = T_presenteF[i][j];
         T_pasadoA[i][j] = T_presenteA[i][j];
+        T_pasadoP[i][j] = T_presenteP[i][j];
       }
     }
-    promedios << t << " " << promedio(T_presenteF) << " " << promedio(T_presenteA) << "\n";
+    promedios << t << " " << promedio(T_presenteF) << " " << promedio(T_presenteA) << " "<< promedio(T_presenteP) << "\n";
     if(n==2000){
       imprimir(T_presenteF, t, "intermedio1_F.txt");
       imprimir(T_presenteA, t, "intermedio1_A.txt");
+      imprimir(T_presenteP, t, "intermedio1_P.txt");
     }
     else if(n==10000){
       imprimir(T_presenteF, t, "intermedio2_F.txt");
       imprimir(T_presenteA, t, "intermedio2_A.txt");
+      imprimir(T_presenteP, t, "intermedio2_P.txt");
     }
   }
   promedios.close();
   imprimir(T_presenteF, t, "final_F.txt");
   imprimir(T_presenteA, t, "final_A.txt");
+  imprimir(T_presenteP, t, "final_P.txt");
 }
 
 double promedio(double M[N][N]){
