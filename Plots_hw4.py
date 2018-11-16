@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+################## ODEs #############################
 #genera arreglos con los archivos de datos
 RG_45 = np.genfromtxt("RG_45.txt")
 RG_10 = np.genfromtxt("RG_10.txt")
@@ -47,3 +48,48 @@ plt.xlabel("x (m)")
 plt.ylabel("y (m)")
 plt.legend()
 plt.savefig("Tray_varias.pdf")
+plt.close()
+
+
+
+#################### PDEs ######################
+
+def plotTemps(nombre, condicion, out_nombre):
+    N, M = np.genfromtxt(nombre).shape
+    a = np.arange(0, M-1)
+    T = np.genfromtxt(nombre, usecols = (a))
+    tiempo = np.genfromtxt(nombre, usecols = (-1))[0]
+    plt.imshow(T, cmap = "jet", vmin = 10, vmax = 100)
+    plt.colorbar(label = "Temperatura (grados C)")
+    plt.title(str(tiempo) + " segundos, fronteras "+condicion)
+    plt.savefig(out_nombre)
+    plt.close()
+
+plotTemps("inicial.txt", "fijas", "inicial_F.pdf")
+plotTemps("intermedio1_F.txt", "fijas", "intermedio1_F.pdf")
+plotTemps("intermedio2_F.txt", "fijas", "intermedio2_F.pdf")
+plotTemps("final_F.txt", "fijas", "final_F.pdf")
+
+plotTemps("inicial.txt", "abiertas", "inicial_A.pdf")
+plotTemps("intermedio1_A.txt", "abiertas", "intermedio1_A.pdf")
+plotTemps("intermedio2_A.txt", "abiertas", "intermedio2_A.pdf")
+plotTemps("final_A.txt", "abiertas", "final_A.pdf")
+
+plotTemps("inicial.txt", "periodicas", "inicial_P.pdf")
+plotTemps("intermedio1_P.txt", "periodicas", "intermedio1_P.pdf")
+plotTemps("intermedio2_P.txt", "periodicas", "intermedio2_P.pdf")
+plotTemps("final_P.txt", "periodicas", "final_P.pdf")
+
+proms = np.genfromtxt("promedios.txt")
+t = proms[:, 0]
+T_Fijas = proms[:, 1]
+T_Abiertas = proms[:, 2]
+T_Periodicas = proms[:, 3]
+plt.plot(t, T_Fijas, label = "Fronteras fijas")
+plt.plot(t, T_Abiertas, label = "Fronteras abiertas")
+plt.plot(t, T_Periodicas, label = "Fronteras periodicas")
+plt.title("Temperaturas promedio")
+plt.xlabel("Tiempo (s)")
+plt.ylabel("Temperatura (grados C)")
+plt.legend()
+plt.savefig("promedios.pdf")
