@@ -5,7 +5,8 @@ datosPDE = final_A.txt final_F.txt final_P.txt inicial.txt intermedio1_A.txt int
 graficasPDE = final_A.pdf final_F.pdf final_P.pdf inicial_A.pdf inicial_F.pdf inicial_P.pdf intermedio1_A.pdf intermedio1_F.pdf intermedio1_P.pdf intermedio2_A.pdf intermedio2_F.pdf intermedio2_P.pdf promedios.pdf
 
 Resultados_hw4.pdf: $(graficasODE) $(graficasPDE) Resultados_hw4.tex
-	pdflatex Resultados_hw4.tex
+	pdflatex Resultados_hw4.tex > /dev/null 2>&1
+	pdflatex Resultados_hw4.tex > /dev/null 2>&1
 
 $(graficasODE) $(graficasPDE): $(datosODE) $(datosPDE)
 	python Plots_hw4.py
