@@ -78,6 +78,7 @@ def plotTemps(nombre, condicion, out_nombre):
     plt.ylabel("y(cm)")
     plt.savefig(out_nombre+"_3D.pdf")#guarda la figura
     plt.close()
+    # basado en matplot3d example code: surface3d_demo.py: https://matplotlib.org/examples/mplot3d/surface3d_demo.html
 
 #grafica para cada condicion de frontera y cada estado
 plotTemps("inicial.txt", "fijas", "inicial_F")
@@ -94,7 +95,7 @@ plotTemps("inicial.txt", "periodicas", "inicial_P")
 plotTemps("intermedio1_P.txt", "periodicas", "intermedio1_P")
 plotTemps("intermedio2_P.txt", "periodicas", "intermedio2_P")
 plotTemps("final_P.txt", "periodicas", "final_P")
-#grafica las temperaturas promedio en el tiempo de cada condicion de frontera 
+#grafica las temperaturas promedio en el tiempo de cada condicion de frontera
 proms = np.genfromtxt("promedios.txt")
 t = proms[:, 0]
 T_Fijas = proms[:, 1]
