@@ -53,32 +53,33 @@ plt.close()
 
 #################### PDEs ######################
 def plotTemps(nombre, condicion, out_nombre):
-    fil, col = np.genfromtxt(nombre).shape
-    a = np.arange(0, col-1)
-    T = np.genfromtxt(nombre, usecols = (a))
-    tiempo = np.genfromtxt(nombre, usecols = (-1))[0]
-    plt.imshow(T, cmap = "jet", vmin = 10, vmax = 100, extent = [0, 50, 0, 50])
+    fil, col = np.genfromtxt(nombre).shape #determina el numero de filas y columnas en el archivo de entrada
+    a = np.arange(0, col-1) #determina las columnas que componen la distribucion de temperaturas
+    T = np.genfromtxt(nombre, usecols = (a)) #crea el arreglo de distribucion de temperaturas
+    tiempo = np.genfromtxt(nombre, usecols = (-1))[0]#toma el valor del tiempo correspondiente
+    plt.imshow(T, cmap = "jet", vmin = 10, vmax = 100, extent = [0, 50, 0, 50])#muestra un mapa de calor de la imagen entre las temperaturas limite del problema
     plt.xlabel("x (cm)")
     plt.ylabel("y (cm)")
     plt.colorbar(label = "Temperatura (grados C)")
     plt.title(str(tiempo) + " segundos, fronteras "+condicion)
-    plt.savefig(out_nombre+".pdf")
+    plt.savefig(out_nombre+".pdf") #guarda la figura
     plt.close()
-
-    x = np.linspace(0, 50, T.shape[0])
+    #graficas en 3D
+    x = np.linspace(0, 50, T.shape[0]) #crea arreglos de x y y para hacer una mesh
     y = np.linspace(0, 50, T.shape[1])
-    X, Y = np.meshgrid(x, y)
-    f = plt.figure()
-    ax = f.gca(projection='3d')
-    temps = ax.plot_surface(X, Y, T, cmap="jet", linewidth=0, antialiased=False, vmin = 10, vmax = 100)
-    ax.set_zlim(10, 100)
-    f.colorbar(temps, label = "Temperatura (grados C)")
+    X, Y = np.meshgrid(x, y) #crea la mesh
+    f = plt.figure() #crea una nueva figura
+    ax = f.gca(projection='3d') #crea los ejes tridimensionales
+    temps = ax.plot_surface(X, Y, T, cmap="jet", linewidth=0, antialiased=False, vmin = 10, vmax = 100) #crea la superficie de temperaturas
+    ax.set_zlim(10, 100) #pone limites en el eje z entre 10 y 100 grados, las temperaturas limite del problema
+    f.colorbar(temps, label = "Temperatura (grados C)") #pone la barra de color
     plt.title(str(tiempo) + " segundos, fronteras "+condicion)
     plt.xlabel("x (cm)")
     plt.ylabel("y(cm)")
-    plt.savefig(out_nombre+"_3D.pdf")
+    plt.savefig(out_nombre+"_3D.pdf")#guarda la figura
     plt.close()
 
+#grafica para cada condicion de frontera y cada estado
 plotTemps("inicial.txt", "fijas", "inicial_F")
 plotTemps("intermedio1_F.txt", "fijas", "intermedio1_F")
 plotTemps("intermedio2_F.txt", "fijas", "intermedio2_F")
@@ -93,7 +94,7 @@ plotTemps("inicial.txt", "periodicas", "inicial_P")
 plotTemps("intermedio1_P.txt", "periodicas", "intermedio1_P")
 plotTemps("intermedio2_P.txt", "periodicas", "intermedio2_P")
 plotTemps("final_P.txt", "periodicas", "final_P")
-
+#grafica las temperaturas promedio en el tiempo de cada condicion de frontera 
 proms = np.genfromtxt("promedios.txt")
 t = proms[:, 0]
 T_Fijas = proms[:, 1]
