@@ -20,7 +20,7 @@ using namespace std;
 #define R D/2
 #define dx L/N
 #define dy L/N
-#define dt (dx*dx*dy*dy)/(2*nu*(dx*dx + dy*dy))
+#define dt (dx*dx*dy*dy)/(2*nu*(dx*dx+dy*dy))
 
 double promedio(double M[N][N]);
 void imprimir(double M[N][N], double t, string nombre);
@@ -61,13 +61,15 @@ int main(){
     }
   }
 
-  int n_pasos = 80000;
+  double T_final = 500000;
+  double step = dt;
+  int n_pasos = T_final/step;
   double t;
   ofstream promedios;
   promedios.open("promedios.txt");
 
   for(int n=0; n<n_pasos; n++){
-    t = n*dt;
+    t = n*step;
     for(int i=1; i<N-1; i++){
       for(int j=1; j<N-1; j++){
         r2 = (i*dx-centro_x)*(i*dx-centro_x) + (j*dy-centro_y)*(j*dy-centro_y);
@@ -108,13 +110,18 @@ int main(){
       }
     }
     promedios << t << " " << promedio(T_presenteF) << " " << promedio(T_presenteA) << " "<< promedio(T_presenteP) << "\n";
-    if(n==2000){
+
+    if(n==int(5000/step)){
       imprimir(T_presenteF, t, "intermedio1_F.txt");
+    }
+    if(n==int(10000/step)){
+      imprimir(T_presenteF, t, "intermedio2_F.txt");
+    }
+    if(n==int(20000/step)){
       imprimir(T_presenteA, t, "intermedio1_A.txt");
       imprimir(T_presenteP, t, "intermedio1_P.txt");
     }
-    else if(n==10000){
-      imprimir(T_presenteF, t, "intermedio2_F.txt");
+    else if(n==int(85000/step)){
       imprimir(T_presenteA, t, "intermedio2_A.txt");
       imprimir(T_presenteP, t, "intermedio2_P.txt");
     }
