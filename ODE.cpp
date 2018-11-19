@@ -96,7 +96,7 @@ double RungeKutta(double theta, string nombre){//funcion que soluciona la ODE pa
   vy[0] = v0*sin(theta);
   t[0] = 0;
   v[0] = v0;
-  //imprime las conidiciones iniciales en el archivo
+  //imprime las condiciones iniciales en el archivo
   archivo << t[0] << " " << x[0] << " " << y[0] << " " << vx[0] << " " << vy[0] << " " << v[0] << "\n";
   //crea las variables necesarias para el metodo Runge-Kutta
   double k1_prima_x; double k1_prima_y; double k1_prima_vx; double k1_prima_vy;
@@ -156,7 +156,7 @@ double RungeKutta(double theta, string nombre){//funcion que soluciona la ODE pa
     vy[i] = vy[i-1] + dt*k_prom_vy;
     v[i] = sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
     //Si la posicion vertical llega al piso cierra el archivo y retorna el valor de x (el rango del tiro), lo que termina el ciclo
-    if(y[i]<=0){
+    if(y[i]<0){
       archivo.close();
       return x[i];
     }
