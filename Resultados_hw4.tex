@@ -5,10 +5,11 @@
 \usepackage[spanish,es-nodecimaldot]{babel}
 \usepackage{subfig}
 \usepackage{graphicx}
+\usepackage{caption}
 
 \title{Tarea 4 - Métodos computacionales}
 \author{Santiago Valencia - 201532432}
-\date{19 de noviembre 2018}
+\date{19 de noviembre de 2018}
 
 
 \begin{document}
@@ -34,8 +35,8 @@ A partir de lo anterior se aplica el método Runge-Kutta de cuarto orden para lo
 \centering
     \subfloat[Trayectoria para 45 grados. ]{\includegraphics[width = 0.45\linewidth]{Tray_45.pdf}}
     \subfloat[Trayectorias para varios ángulos de lanzamiento.]{\includegraphics[width=0.45\linewidth]{Tray_varias.pdf}}
-    \label{fig:ODEs}
     \caption{Gráficas de la solución de la ecuación diferencial ordinaria.}
+    \label{fig:ODEs}
 \end{figure}
 
 Gracias a las gráficas se puede ver que, contrario a lo que sucede en el caso sin fricción, el ángulo entre los ensayados que produce el mayor rango es el de 20 grados.
@@ -43,19 +44,37 @@ Gracias a las gráficas se puede ver que, contrario a lo que sucede en el caso s
 
 \section*{Ecuaciones diferenciales parciales}
 
-Para este ejercicio se evaluaron tres condiciones de frontera: fijas, abiertas y periódicas. Las gráficas para fronteras fijas se pueden ver en la figura \ref{fig:fijas}.
+Para este ejercicio se desea evaluar la ecuación de difusión bidimensional:
+\begin{equation*}
+\frac{\partial T(t, x, y)}{\partial t-} = \nu \frac{\partial^2 T(t, x, y)}{\partial x^2} + \nu \frac{\partial^2 T(t, x, y)}{\partial y^2}
+\end{equation*}
+con $\nu = k/(C_p\rho)$. Con este fin se aproximó la ecuación diferencial a una ecuación discreta de diferencias finitas:
+\begin{equation*}
+\frac{T_{i, j}^{n+1} - T_{i, j}^{n}}{dt} = \nu\frac{T^n_{i+1, j} -2T^n_{i, j}+T^n_{i-1, j}}{(dx)^2} + \nu\frac{T^n_{i, j+1} -2T^n_{i, j}+T^n_{i, j-1}}{(dy)^2}
+\end{equation*}
 
+El valor de $dx$ y $dy$ se tomó como $L/N$, donde $L$ es la longitud de uno de los lados del cuadrado de interés y $N$ es el número de puntos sobre uno de los lados de este cuadrado. El valor de $dt$ se obtuvo por medio de un análisis de estabilidad a la ecuación diferencial \cite{mit}:
+
+\begin{equation*}
+    \frac{dt}{(dx)^2} + \frac{dt}{(dy)^2} \leq \frac{1}{2\nu} \Rightarrow (dt)_{\text{max}} = \frac{1}{2\nu}\frac{(dx)^2(dy)^2}{(dx)^2+(dy)^2}
+\end{equation*}
+
+Para este ejercicio se evaluaron tres condiciones de frontera: fijas, abiertas y periódicas. La condición de fronteras fijas mantiene los bordes del área de interés a temperatura constante, en este caso de 10 grados C. Por lo tanto, la regla para generar estas fronteras es:
+\begin{equation*}
+    T_{i, j = \text{frontera}} = 10
+\end{equation*}
+Las gráficas para fronteras fijas se pueden ver en la figura \ref{fig:fijas}.
 \begin{figure}[h]
 \centering
     \subfloat[Estado inicial. ]{\includegraphics[width = 0.45\linewidth]{inicial_F.pdf}}
     \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_F.pdf}} \\
       \subfloat[Estado intermedio 2. ]{\includegraphics[width = 0.45\linewidth]{intermedio2_F.pdf}}
     \subfloat[Estado de equilibrio.]{\includegraphics[width=0.45\linewidth]{final_F.pdf}}
-    \label{fig:fijas}
     \caption{Gráficas para fronteras fijas.}
+    \label{fig:fijas}
 \end{figure}
 
-Las gráficas para fronteras abiertas se pueden ver en la figura \ref{fig:abiertas}.
+En el caso de fronteras abiertas se quiere simular que la distribución de temperaturas se propaga sobre un dominio grande sin restricciones. Esto quiere decir que la derivada espacial de la temperatura, $\partial T/ \partial x$ o $\partial T/ \partial y$ es igual a 0 cuando se evalúa sobre la frontera. Si se implementa una aproximación por diferencias finitas con \textit{forward difference} o \textit{backward difference}, según el caso, se obtiene que esta condición significa que en esta condición de frontera la temperatura en los bordes del área de interés toma el valor de su vecino inmediatamente anterior en la dirección $x$ si la frontera es en $x$ o en la dirección $y$ si la frontera es en $y$. Las gráficas para fronteras abiertas se pueden ver en la figura \ref{fig:abiertas}.
 
 \begin{figure}[h]
 \centering
@@ -63,11 +82,10 @@ Las gráficas para fronteras abiertas se pueden ver en la figura \ref{fig:abiert
     \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_A.pdf}} \\
       \subfloat[Estado intermedio 2. ]{\includegraphics[width = 0.45\linewidth]{intermedio2_A.pdf}}
     \subfloat[Estado de equilibrio.]{\includegraphics[width=0.45\linewidth]{final_A.pdf}}
-    \label{fig:abiertas}
     \caption{Gráficas para fronteras abiertas.}
+    \label{fig:abiertas}
 \end{figure}
-
-Las gráficas para fronteras periódicas se pueden ver en la figura \ref{fig:periodicas}.
+Por otro lado, en el caso de fronteras periódicas se quiere simular que la distribución de temperatura en una frontera es igual a la distribución de temperatura en la frontera opuesta. Por esto, la relación para esta condición de frontera debe ser abierta en uno de los extremos y en el otro debe tomar la información de la frontera opuesta. Las gráficas para fronteras periódicas se pueden ver en la figura \ref{fig:periodicas}.
 
 \begin{figure}[h]
 \centering
@@ -75,8 +93,8 @@ Las gráficas para fronteras periódicas se pueden ver en la figura \ref{fig:per
     \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_P.pdf}} \\
       \subfloat[Estado intermedio 2. ]{\includegraphics[width = 0.45\linewidth]{intermedio2_P.pdf}}
     \subfloat[Estado de equilibrio.]{\includegraphics[width=0.45\linewidth]{final_P.pdf}}
-    \label{fig:periodicas}
     \caption{Gráficas para fronteras periódicas.}
+    \label{fig:periodicas}
 \end{figure}
 
 Finalmente, en la figura \ref{fig:promedios} se puede ver una gráfica de la evolución temporal de la temperatura promedio en el área de interés para cada condición de frontera.
@@ -84,17 +102,14 @@ Finalmente, en la figura \ref{fig:promedios} se puede ver una gráfica de la evo
 \begin{figure}[h]
 	\centering
 	\includegraphics[width = \linewidth]{promedios.pdf}
-	\label{fig:promedios}
 	\caption{Temperaturas promedio.}
+	\label{fig:promedios}
 \end{figure} 
 
+\begin{thebibliography}{}
+\bibitem{mit}
+J. Lee, \textit{Stability Of Finite Difference Schemes On The Diffusion Equation With Discontinuous Coefficients} (Massachusetts Institute of Technology, Cambridge, MA, 2017).
 
-
-
-
-
-
-
-
+\end{thebibliography}
 
 \end{document}
