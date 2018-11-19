@@ -56,7 +56,7 @@ int main(){
     }
   }
 
-  cout << "La mayor distancia alcanzada es de " << distancias[7]<< " m y corresponde a un angulo de " << angulos[7] <<" grados."<< "\n";
+  cout << "La mayor distancia alcanzada es de " << distancias[7]<< " m y corresponde a un angulo de " << angulos[7] <<" grados."<< "\n\n";
 
 }
 
