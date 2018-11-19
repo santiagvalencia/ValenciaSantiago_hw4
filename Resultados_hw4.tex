@@ -39,7 +39,7 @@ A partir de lo anterior se aplica el método Runge-Kutta de cuarto orden para lo
     \label{fig:ODEs}
 \end{figure}
 
-Gracias a las gráficas se puede ver que, contrario a lo que sucede en el caso sin fricción, el ángulo entre los ensayados que produce el mayor rango es el de 20 grados.
+Para el lanzamiento de 45 grados se obtiene una distancia final de 4.25 m. Esta es inferior a las distancias que se obtienen con lanzamientos a 10, 20 y 30 grados. Gracias a las gráficas se puede ver que, contrario a lo que sucede en el caso sin fricción, el ángulo entre los ensayados que produce el mayor rango es el de 20 grados, con una distancia de 5.21 m.
 
 
 \section*{Ecuaciones diferenciales parciales}
@@ -52,19 +52,18 @@ con $\nu = k/(C_p\rho)$. Con este fin se aproximó la ecuación diferencial a un
 \begin{equation*}
 \frac{T_{i, j}^{n+1} - T_{i, j}^{n}}{dt} = \nu\frac{T^n_{i+1, j} -2T^n_{i, j}+T^n_{i-1, j}}{(dx)^2} + \nu\frac{T^n_{i, j+1} -2T^n_{i, j}+T^n_{i, j-1}}{(dy)^2}
 \end{equation*}
-
-El valor de $dx$ y $dy$ se tomó como $L/N$, donde $L$ es la longitud de uno de los lados del cuadrado de interés y $N$ es el número de puntos sobre uno de los lados de este cuadrado. El valor de $dt$ se obtuvo por medio de un análisis de estabilidad a la ecuación diferencial \cite{mit}:
+El valor de $dx$ y $dy$ se tomó como $L/N$, donde $L$ es la longitud de uno de los lados del cuadrado de interés y $N$ es el número de puntos sobre el cuadrado de interés. El valor de $dt$ se obtuvo por medio de un análisis de estabilidad a la ecuación diferencial \cite{mit}:
 
 \begin{equation*}
     \frac{dt}{(dx)^2} + \frac{dt}{(dy)^2} \leq \frac{1}{2\nu} \Rightarrow (dt)_{\text{max}} = \frac{1}{2\nu}\frac{(dx)^2(dy)^2}{(dx)^2+(dy)^2}
 \end{equation*}
 
-Para este ejercicio se evaluaron tres condiciones de frontera: fijas, abiertas y periódicas. La condición de fronteras fijas mantiene los bordes del área de interés a temperatura constante, en este caso de 10 grados C. Por lo tanto, la regla para generar estas fronteras es:
+En el caso particular de este ejercicio, se tiene un círculo de 10 cm de diámetro en el centro de un cuadrado de 50x50 cm. El círculo se mantiene a  100 grados C y el cuadrado alrededor se modela como la calcita. Para este ejercicio se evaluaron tres condiciones de frontera: fijas, abiertas y periódicas. La condición de fronteras fijas mantiene los bordes del área de interés a temperatura constante, en este caso de 10 grados C. Por lo tanto, la regla para generar estas fronteras es:
 \begin{equation*}
     T_{i, j = \text{frontera}} = 10
 \end{equation*}
 Las gráficas para fronteras fijas se pueden ver en la figura \ref{fig:fijas}.
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
     \subfloat[Estado inicial. ]{\includegraphics[width = 0.45\linewidth]{inicial_F.pdf}}
     \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_F.pdf}} \\
@@ -73,10 +72,20 @@ Las gráficas para fronteras fijas se pueden ver en la figura \ref{fig:fijas}.
     \caption{Gráficas para fronteras fijas.}
     \label{fig:fijas}
 \end{figure}
+En la figura \ref{fig:fijas3D} se pueden ver las gráficas en 3D para la condición de fronteras fijas.
+\begin{figure}[htbp]
+\centering
+    \subfloat[Estado inicial. ]{\includegraphics[width = 0.45\linewidth]{inicial_F_3D.pdf}}
+    \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_F_3D.pdf}} \\
+      \subfloat[Estado intermedio 2. ]{\includegraphics[width = 0.45\linewidth]{intermedio2_F_3D.pdf}}
+    \subfloat[Estado de equilibrio.]{\includegraphics[width=0.45\linewidth]{final_F_3D.pdf}}
+    \caption{Gráficas 3D para fronteras fijas.}
+    \label{fig:fijas3D}
+\end{figure}
+Como se puede ver en las figuras \ref{fig:fijas} y \ref{fig:fijas3D}, en el caso de condiciones de frontera fijas el estado de equilibrio forma un gradiente entre la temperatura de los bordes y la temperatura del centro.
 
 En el caso de fronteras abiertas se quiere simular que la distribución de temperaturas se propaga sobre un dominio grande sin restricciones. Esto quiere decir que la derivada espacial de la temperatura, $\partial T/ \partial x$ o $\partial T/ \partial y$ es igual a 0 cuando se evalúa sobre la frontera. Si se implementa una aproximación por diferencias finitas con \textit{forward difference} o \textit{backward difference}, según el caso, se obtiene que esta condición significa que en esta condición de frontera la temperatura en los bordes del área de interés toma el valor de su vecino inmediatamente anterior en la dirección $x$ si la frontera es en $x$ o en la dirección $y$ si la frontera es en $y$. Las gráficas para fronteras abiertas se pueden ver en la figura \ref{fig:abiertas}.
-
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
     \subfloat[Estado inicial. ]{\includegraphics[width = 0.45\linewidth]{inicial_A.pdf}}
     \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_A.pdf}} \\
@@ -85,9 +94,21 @@ En el caso de fronteras abiertas se quiere simular que la distribución de tempe
     \caption{Gráficas para fronteras abiertas.}
     \label{fig:abiertas}
 \end{figure}
-Por otro lado, en el caso de fronteras periódicas se quiere simular que la distribución de temperatura en una frontera es igual a la distribución de temperatura en la frontera opuesta. Por esto, la relación para esta condición de frontera debe ser abierta en uno de los extremos y en el otro debe tomar la información de la frontera opuesta. Las gráficas para fronteras periódicas se pueden ver en la figura \ref{fig:periodicas}.
+En la figura \ref{fig:abiertas3D} se pueden ver las gráficas en 3D para condiciones de frontera abiertas.
+\begin{figure}[htbp]
+\centering
+    \subfloat[Estado inicial. ]{\includegraphics[width = 0.45\linewidth]{inicial_A_3D.pdf}}
+    \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_A_3D.pdf}} \\
+      \subfloat[Estado intermedio 2. ]{\includegraphics[width = 0.45\linewidth]{intermedio2_A_3D.pdf}}
+    \subfloat[Estado de equilibrio.]{\includegraphics[width=0.45\linewidth]{final_A_3D.pdf}}
+    \caption{Gráficas 3D para fronteras abiertas.}
+    \label{fig:abiertas3D}
+\end{figure}
 
-\begin{figure}[h]
+Como se puede ver en las figuras \ref{fig:abiertas} y \ref{fig:abiertas3D}, en el caso de fronteras abiertas no hay una restricción sobre las temperaturas en los bordes del cuadrado, por lo que el punto de equilibrio se alcanza cuando todo el resto del cuadrado ha alcanzado la misma temperatura del cilindro, que es la fuente de calor en este problema. Si se compara con el caso de condiciones de frontera fijas, se puede ver que el estado de equilibrio para condiciones de frontera abiertas toma considerablemente más tiempo en formarse.
+
+Por otro lado, en el caso de fronteras periódicas se quiere simular que la distribución de temperatura en una frontera es igual a la distribución de temperatura en la frontera opuesta. Por esto, la relación para esta condición de frontera debe ser abierta en uno de los extremos y en el otro debe tomar la información de la frontera opuesta. Las gráficas para fronteras periódicas se pueden ver en la figura \ref{fig:periodicas}.
+\begin{figure}[htbp]
 \centering
     \subfloat[Estado inicial. ]{\includegraphics[width = 0.45\linewidth]{inicial_P.pdf}}
     \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_P.pdf}} \\
@@ -96,15 +117,26 @@ Por otro lado, en el caso de fronteras periódicas se quiere simular que la dist
     \caption{Gráficas para fronteras periódicas.}
     \label{fig:periodicas}
 \end{figure}
+En la figura \ref{fig:periodicas3D} se pueden ver las gráficas 3D para las condiciones de frontera periódicas.
+\begin{figure}[htbp]
+\centering
+    \subfloat[Estado inicial. ]{\includegraphics[width = 0.45\linewidth]{inicial_P_3D.pdf}}
+    \subfloat[Estado intermedio 1.]{\includegraphics[width=0.45\linewidth]{intermedio1_P_3D.pdf}} \\
+      \subfloat[Estado intermedio 2. ]{\includegraphics[width = 0.45\linewidth]{intermedio2_P_3D.pdf}}
+    \subfloat[Estado de equilibrio.]{\includegraphics[width=0.45\linewidth]{final_P_3D.pdf}}
+    \caption{Gráficas 3D para fronteras periódicas.}
+    \label{fig:periodicas3D}
+\end{figure}
+El caso de fronteras periódicas, por la simetría de este sistema en particular, es muy similar al caso de fronteras abiertas. En ambos escenarios el equilibrio se alcanza cuando toda el área de interés está a la misma temperatura del cilindro. El equilibrio toma aproximadamente el mismo tiempo en establecerse en estos dos casos. Sin embargo, el caso de fronteras periódicas converge hacia el equilibrio en un tiempo menor que el caso de fronteras abiertas.
 
 Finalmente, en la figura \ref{fig:promedios} se puede ver una gráfica de la evolución temporal de la temperatura promedio en el área de interés para cada condición de frontera.
-
-\begin{figure}[h]
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width = \linewidth]{promedios.pdf}
 	\caption{Temperaturas promedio.}
 	\label{fig:promedios}
-\end{figure} 
+\end{figure}
+La gráfica muestra que, como ya se ha mencionado, el caso de fronteras fijas converge hacia el equilibrio de forma más rápida que los otros dos. Además, el caso de fronteras fijas consigue el equilibrio en una menor temperatura que los otros dos casos porque el dominio de transferencia de calor está restringido en los bordes. Por otro lado, como se puede ver en la gráfica, para este caso los comportamientos de las condiciones de frontera periódicas y abiertas son muy similares entre sí a causa de la simetría del sistema examinado.
 
 \begin{thebibliography}{}
 \bibitem{mit}
