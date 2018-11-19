@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 ################## ODEs #############################
 #genera arreglos con los archivos de datos
 RG_45 = np.genfromtxt("RG_45.txt")
@@ -50,35 +51,47 @@ plt.legend()
 plt.savefig("Tray_varias.pdf")
 plt.close()
 
-
-
 #################### PDEs ######################
-
 def plotTemps(nombre, condicion, out_nombre):
-    N, M = np.genfromtxt(nombre).shape
-    a = np.arange(0, M-1)
+    fil, col = np.genfromtxt(nombre).shape
+    a = np.arange(0, col-1)
     T = np.genfromtxt(nombre, usecols = (a))
     tiempo = np.genfromtxt(nombre, usecols = (-1))[0]
-    plt.imshow(T, cmap = "jet", vmin = 10, vmax = 100)
+    plt.imshow(T, cmap = "jet", vmin = 10, vmax = 100, extent = [0, 50, 0, 50])
+    plt.xlabel("x (cm)")
+    plt.ylabel("y (cm)")
     plt.colorbar(label = "Temperatura (grados C)")
     plt.title(str(tiempo) + " segundos, fronteras "+condicion)
-    plt.savefig(out_nombre)
+    plt.savefig(out_nombre+".pdf")
     plt.close()
 
-plotTemps("inicial.txt", "fijas", "inicial_F.pdf")
-plotTemps("intermedio1_F.txt", "fijas", "intermedio1_F.pdf")
-plotTemps("intermedio2_F.txt", "fijas", "intermedio2_F.pdf")
-plotTemps("final_F.txt", "fijas", "final_F.pdf")
+    x = np.linspace(0, 50, T.shape[0])
+    y = np.linspace(0, 50, T.shape[1])
+    X, Y = np.meshgrid(x, y)
+    f = plt.figure()
+    ax = f.gca(projection='3d')
+    temps = ax.plot_surface(X, Y, T, cmap="jet", linewidth=0, antialiased=False, vmin = 10, vmax = 100)
+    ax.set_zlim(10, 100)
+    f.colorbar(temps, label = "Temperatura (grados C)")
+    plt.xlabel("x (cm)")
+    plt.ylabel("y(cm)")
+    plt.savefig(out_nombre+"_3D.pdf")
+    plt.close()
 
-plotTemps("inicial.txt", "abiertas", "inicial_A.pdf")
-plotTemps("intermedio1_A.txt", "abiertas", "intermedio1_A.pdf")
-plotTemps("intermedio2_A.txt", "abiertas", "intermedio2_A.pdf")
-plotTemps("final_A.txt", "abiertas", "final_A.pdf")
+plotTemps("inicial.txt", "fijas", "inicial_F")
+plotTemps("intermedio1_F.txt", "fijas", "intermedio1_F")
+plotTemps("intermedio2_F.txt", "fijas", "intermedio2_F")
+plotTemps("final_F.txt", "fijas", "final_F")
 
-plotTemps("inicial.txt", "periodicas", "inicial_P.pdf")
-plotTemps("intermedio1_P.txt", "periodicas", "intermedio1_P.pdf")
-plotTemps("intermedio2_P.txt", "periodicas", "intermedio2_P.pdf")
-plotTemps("final_P.txt", "periodicas", "final_P.pdf")
+plotTemps("inicial.txt", "abiertas", "inicial_A")
+plotTemps("intermedio1_A.txt", "abiertas", "intermedio1_A")
+plotTemps("intermedio2_A.txt", "abiertas", "intermedio2_A")
+plotTemps("final_A.txt", "abiertas", "final_A")
+
+plotTemps("inicial.txt", "periodicas", "inicial_P")
+plotTemps("intermedio1_P.txt", "periodicas", "intermedio1_P")
+plotTemps("intermedio2_P.txt", "periodicas", "intermedio2_P")
+plotTemps("final_P.txt", "periodicas", "final_P")
 
 proms = np.genfromtxt("promedios.txt")
 t = proms[:, 0]
