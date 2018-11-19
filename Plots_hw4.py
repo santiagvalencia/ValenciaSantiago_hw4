@@ -73,6 +73,7 @@ def plotTemps(nombre, condicion, out_nombre):
     temps = ax.plot_surface(X, Y, T, cmap="jet", linewidth=0, antialiased=False, vmin = 10, vmax = 100)
     ax.set_zlim(10, 100)
     f.colorbar(temps, label = "Temperatura (grados C)")
+    plt.title(str(tiempo) + " segundos, fronteras "+condicion)
     plt.xlabel("x (cm)")
     plt.ylabel("y(cm)")
     plt.savefig(out_nombre+"_3D.pdf")
